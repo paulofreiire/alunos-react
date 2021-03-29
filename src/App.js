@@ -28,13 +28,16 @@ class App extends React.Component {
             alunos: [],
             campi: [],
             cursos: [],
-            btnLabel: "Inserir"
+            btnLabel: "Inserir",
+            offset: 0,
+            currentPage: 0,
         }
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
+        this.submitUpdate = this.submitUpdate.bind(this);
         this.cleanFields = this.cleanFields.bind(this);
     }
 
@@ -63,6 +66,34 @@ class App extends React.Component {
         this.setState({[e.target.name]: e.target.value});
     }
 
+    async submitUpdate(e) {
+        e.preventDefault();
+
+        const alunoState = {
+            matricula: this.state.matricula,
+            nome: this.state.nome,
+            dateNascimento: this.state.dateNascimento,
+            email: this.state.email,
+            ddd: this.state.ddd,
+            telefone: this.state.telefone,
+            operadora: this.state.operadora,
+            curso_id: this.state.curso,
+            campus_id: this.state.campus,
+        }
+
+        try {
+            const aluno = (await axios.put(urlApi + 'alunos/' + alunoState.matricula, alunoState)).data
+            const alunos = this.state.alunos.filter((aluno) => aluno.matricula !== alunoState.matricula)
+
+            this.setState({
+                alunos: [aluno, ...alunos],
+            });
+            this.cleanFields()
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     async handleDelete(matricula) {
         try {
             await axios.delete(urlApi + 'alunos/' + matricula)
@@ -81,8 +112,13 @@ class App extends React.Component {
             btnLabel: "ATUALIZAR",
             matricula: aluno[0].matricula,
             nome: aluno[0].nome,
-            dateNascimento: aluno[0].dateNascimento,
-            curso: aluno[0].curso,
+            dateNascimento: new Date(aluno[0].dateNascimento).toISOString().split('T')[0],
+            curso: aluno[0].curso_id,
+            email:aluno[0].email,
+            ddd: aluno[0].ddd,
+            telefone: aluno[0].telefone,
+            operadora: aluno[0].operadora,
+            campus: aluno[0].campus_id,
         })
     }
 
@@ -106,11 +142,8 @@ class App extends React.Component {
             const alunos = [...this.state.alunos, aluno]
             this.setState({
                 alunos: alunos,
-                matricula: "",
-                nome: "",
-                dateNascimento: "",
-                email: "",
             });
+            this.cleanFields();
         } catch (e) {
             console.log(e)
         }
@@ -122,6 +155,11 @@ class App extends React.Component {
             nome: "",
             dateNascimento: "",
             email: "",
+            curso: "",
+            ddd: "",
+            telefone: "",
+            operadora: "",
+            campus: "",
             btnLabel: "Inserir"
         });
     }
@@ -134,7 +172,7 @@ class App extends React.Component {
                         campus={this.state.campi}
                         cursos={this.state.cursos}
                         atualizar={this.state.btnLabel !== "Inserir" ? true : false}
-                        handleSubmit={this.handleSubmit}
+                        handleSubmit={this.state.btnLabel !== "Inserir" ? this.submitUpdate : this.handleSubmit}
                         handleChange={this.handleChange}/>
                 <ListAlunos modal={this.state.modal} alunos={this.state.alunos} handleUpdate={this.handleUpdate}
                             handleDelete={this.handleDelete}/>

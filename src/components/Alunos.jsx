@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form, Col, Row, Card, Button} from 'react-bootstrap';
+import {Form, Col, Card, Button} from 'react-bootstrap';
 
 function alunos(props) {
     const aluno = props.aluno;
@@ -17,7 +17,8 @@ function alunos(props) {
                             <Form.Label>Matrícula</Form.Label>
                             <Form.Control readOnly={props.atualizar} onChange={props.handleChange}
                                           value={aluno.matricula} type="number"
-                                          placeholder="Digite a matrícula" name="matricula"/>
+                                          placeholder="Digite a matrícula" name="matricula"
+                                          min="100000" max="999999"/>
                         </Form.Group>
 
                         <Form.Group as={Col} controlId="nome">
@@ -44,7 +45,7 @@ function alunos(props) {
                     <Form.Row>
                         <Form.Group as={Col} lg="1" controlId="ddd">
                             <Form.Label>DDD</Form.Label>
-                            <Form.Control onChange={props.handleChange} value={aluno.ddd} type="tel"
+                            <Form.Control onChange={props.handleChange} value={aluno.ddd} type="number"
                                           placeholder="85" name="ddd" min="11" max="99"/>
                         </Form.Group>
 
@@ -56,13 +57,13 @@ function alunos(props) {
 
                         <Form.Group as={Col} lg="3" controlId="operadora">
                             <Form.Label>Operadora</Form.Label>
-                            <Form.Control onChange={props.handleChange} as="select" defaultValue="Choose..."
+                            <Form.Control onChange={props.handleChange} value={aluno.operadora} as="select" defaultValue="Choose..."
                                           name="operadora">
-
-                                <option>TIM</option>
-                                <option>Oi</option>
-                                <option>Claro</option>
-                                <option>VIVO</option>
+                                <option selected="selected">Escolher Operadora</option>
+                                <option value="TIM">TIM</option>
+                                <option value="Oi">Oi</option>
+                                <option value="Claro">Claro</option>
+                                <option value="VIVO">VIVO</option>
                             </Form.Control>
                         </Form.Group>
                     </Form.Row>
@@ -70,8 +71,10 @@ function alunos(props) {
                     <Form.Row>
                         <Form.Group as={Col} controlId="campus">
                             <Form.Label>Campus</Form.Label>
+
                             <Form.Control onChange={props.handleChange} value={aluno.campus} as="select"
-                                          defaultValue="Choose..." name="campus">
+                                           name="campus" required>
+                                <option selected="selected">Escolher Campus</option>
                                 {campi.map((campus) => {
                                     return <option value={campus.id}>{campus.nome}</option>
                                 })}
@@ -81,9 +84,10 @@ function alunos(props) {
                         <Form.Group as={Col} controlId="curso">
                             <Form.Label>Curso</Form.Label>
                             <Form.Control onChange={props.handleChange} value={aluno.curso} as="select"
-                                          defaultValue="Choose..." name="curso">
+                                           name="curso">
+                                <option selected="selected">Escolha um curso</option>
                                 {cursos.filter((curso) => {
-                                        return curso.campus_id.toString() === aluno.campus
+                                        return curso.campus_id.toString() === aluno.campus.toString()
                                     }).map((curso) => {
                                     return <option value={curso.id}>{curso.nome}</option>
                                 })}
