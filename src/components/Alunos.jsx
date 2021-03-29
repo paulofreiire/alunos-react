@@ -3,6 +3,9 @@ import {Form, Col, Row, Card, Button} from 'react-bootstrap';
 
 function alunos(props) {
     const aluno = props.aluno;
+    const campi = props.campus;
+    const cursos = props.cursos;
+
     return <div className="container-md mt-10">
         <h1><b>Sistema de Controle de Alunos</b></h1>
         <Card border="primary">
@@ -12,7 +15,8 @@ function alunos(props) {
                     <Form.Row>
                         <Form.Group as={Col} lg="3" controlId="matricula">
                             <Form.Label>Matrícula</Form.Label>
-                            <Form.Control readOnly={props.atualizar} onChange={props.handleChange} value={aluno.matricula} type="number"
+                            <Form.Control readOnly={props.atualizar} onChange={props.handleChange}
+                                          value={aluno.matricula} type="number"
                                           placeholder="Digite a matrícula" name="matricula"/>
                         </Form.Group>
 
@@ -27,30 +31,62 @@ function alunos(props) {
                         <Form.Group as={Col} lg="3" controlId="data">
                             <Form.Label>Data de Nascimento</Form.Label>
                             <Form.Control onChange={props.handleChange} value={aluno.dateNascimento} type="date"
-                                          placeholder="1234 Main St" name="dateNascimento"/>
+                                          name="dateNascimento"/>
                         </Form.Group>
 
                         <Form.Group as={Col} controlId="email">
                             <Form.Label>Email</Form.Label>
-                            <Form.Control onChange={props.handleChange} value={aluno.email} type="number"
+                            <Form.Control onChange={props.handleChange} value={aluno.email} type="text"
                                           placeholder="Email@email.com" name="email" required/>
+                        </Form.Group>
+                    </Form.Row>
+
+                    <Form.Row>
+                        <Form.Group as={Col} lg="1" controlId="ddd">
+                            <Form.Label>DDD</Form.Label>
+                            <Form.Control onChange={props.handleChange} value={aluno.ddd} type="tel"
+                                          placeholder="85" name="ddd" min="11" max="99"/>
+                        </Form.Group>
+
+                        <Form.Group as={Col} lg="4" controlId="telefone">
+                            <Form.Label>Telefone</Form.Label>
+                            <Form.Control onChange={props.handleChange} value={aluno.telefone} type="number"
+                                          placeholder="99999-9999" name="telefone" min="11111111" max="999999999"/>
+                        </Form.Group>
+
+                        <Form.Group as={Col} lg="3" controlId="operadora">
+                            <Form.Label>Operadora</Form.Label>
+                            <Form.Control onChange={props.handleChange} as="select" defaultValue="Choose..."
+                                          name="operadora">
+
+                                <option>TIM</option>
+                                <option>Oi</option>
+                                <option>Claro</option>
+                                <option>VIVO</option>
+                            </Form.Control>
                         </Form.Group>
                     </Form.Row>
 
                     <Form.Row>
                         <Form.Group as={Col} controlId="campus">
                             <Form.Label>Campus</Form.Label>
-                            <Form.Control as="select" defaultValue="Choose...">
-                                <option>Pici</option>
-                                <option>Benfica</option>
+                            <Form.Control onChange={props.handleChange} value={aluno.campus} as="select"
+                                          defaultValue="Choose..." name="campus">
+                                {campi.map((campus) => {
+                                    return <option value={campus.id}>{campus.nome}</option>
+                                })}
                             </Form.Control>
                         </Form.Group>
 
                         <Form.Group as={Col} controlId="curso">
                             <Form.Label>Curso</Form.Label>
-                            <Form.Control as="select" defaultValue="Choose...">
-                                <option>Computação</option>
-                                <option>Moda</option>
+                            <Form.Control onChange={props.handleChange} value={aluno.curso} as="select"
+                                          defaultValue="Choose..." name="curso">
+                                {cursos.filter((curso) => {
+                                        return curso.campus_id.toString() === aluno.campus
+                                    }).map((curso) => {
+                                    return <option value={curso.id}>{curso.nome}</option>
+                                })}
                             </Form.Control>
                         </Form.Group>
                     </Form.Row>
@@ -70,3 +106,4 @@ function alunos(props) {
 }
 
 export default alunos;
+

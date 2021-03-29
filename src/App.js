@@ -21,8 +21,13 @@ class App extends React.Component {
             dateNascimento: "",
             email: "",
             curso: "",
+            ddd: "",
+            telefone: "",
+            operadora: "",
+            campus: "",
             alunos: [],
-            deleteAluno: null,
+            campi: [],
+            cursos: [],
             btnLabel: "Inserir"
         }
 
@@ -39,6 +44,19 @@ class App extends React.Component {
                 const alunos = res.data;
                 this.setState({alunos: alunos});
             })
+
+        axios.get(urlApi + 'campus')
+            .then(res => {
+                const campus = res.data;
+                const cursos = []
+                campus.forEach((campus) => {
+                    campus.curso.forEach((curso) => {
+                        cursos.push(curso)
+                    })
+                });
+                this.setState({campi: campus, cursos: cursos});
+            })
+
     }
 
     handleChange(e) {
@@ -57,13 +75,14 @@ class App extends React.Component {
 
     handleUpdate(matricula) {
         const aluno = this.state.alunos.filter((aluno) => aluno.matricula === matricula)
+        console.log(aluno)
 
         this.setState({
             btnLabel: "ATUALIZAR",
-            matricula: aluno.matricula,
-            nome: aluno.nome,
-            dateNascimento: aluno.dateNascimento,
-            curso_id: aluno.email,
+            matricula: aluno[0].matricula,
+            nome: aluno[0].nome,
+            dateNascimento: aluno[0].dateNascimento,
+            curso: aluno[0].curso,
         })
     }
 
@@ -74,7 +93,12 @@ class App extends React.Component {
             matricula: this.state.matricula,
             nome: this.state.nome,
             dateNascimento: this.state.dateNascimento,
-            curso_id: this.state.email,
+            email: this.state.email,
+            ddd: this.state.ddd,
+            telefone: this.state.telefone,
+            operadora: this.state.operadora,
+            curso_id: this.state.curso,
+            campus_id: this.state.campus,
         }
 
         try {
@@ -107,6 +131,8 @@ class App extends React.Component {
             <div className="App">
                 <Alunos btnLabel={this.state.btnLabel}
                         aluno={this.state} handleClean={this.cleanFields}
+                        campus={this.state.campi}
+                        cursos={this.state.cursos}
                         atualizar={this.state.btnLabel !== "Inserir" ? true : false}
                         handleSubmit={this.handleSubmit}
                         handleChange={this.handleChange}/>

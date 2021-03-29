@@ -1,6 +1,5 @@
-import React, {useState} from "react";
+import React from "react";
 import {Button, Modal} from "react-bootstrap";
-import axios from "axios";
 
 function modal(props) {
     const handleClose = () => {
