@@ -1,6 +1,7 @@
 import React from 'react';
 import {Form, Col, Card, Button} from 'react-bootstrap';
 
+
 function alunos(props) {
     const aluno = props.aluno;
     const campi = props.campus;
@@ -18,13 +19,13 @@ function alunos(props) {
                             <Form.Control readOnly={props.atualizar} onChange={props.handleChange}
                                           value={aluno.matricula} type="number"
                                           placeholder="Digite a matrícula" name="matricula"
-                                          min="100000" max="999999"/>
+                                          min="100000" max="999999" required/>
                         </Form.Group>
 
                         <Form.Group as={Col} controlId="nome">
                             <Form.Label>Nome</Form.Label>
                             <Form.Control onChange={props.handleChange} value={aluno.nome} type="text"
-                                          placeholder="Nome Completo" name="nome"/>
+                                          placeholder="Nome Completo" name="nome" minlength="3" required/>
                         </Form.Group>
                     </Form.Row>
 
@@ -32,7 +33,7 @@ function alunos(props) {
                         <Form.Group as={Col} lg="3" controlId="data">
                             <Form.Label>Data de Nascimento</Form.Label>
                             <Form.Control onChange={props.handleChange} value={aluno.dateNascimento} type="date"
-                                          name="dateNascimento"/>
+                                          name="dateNascimento" required/>
                         </Form.Group>
 
                         <Form.Group as={Col} controlId="email">
@@ -46,16 +47,16 @@ function alunos(props) {
                         <Form.Group as={Col} lg="1" controlId="ddd">
                             <Form.Label>DDD</Form.Label>
                             <Form.Control onChange={props.handleChange} value={aluno.ddd} type="number"
-                                          placeholder="85" name="ddd" min="11" max="99"/>
+                                          placeholder="85" name="ddd" min="11" max="99" required/>
                         </Form.Group>
 
-                        <Form.Group as={Col} lg="4" controlId="telefone">
+                        <Form.Group as={Col} lg="4" controlId="telefone" >
                             <Form.Label>Telefone</Form.Label>
                             <Form.Control onChange={props.handleChange} value={aluno.telefone} type="number"
-                                          placeholder="99999-9999" name="telefone" min="11111111" max="999999999"/>
+                                          placeholder="99999-9999" name="telefone" min="11111111" max="999999999" required/>
                         </Form.Group>
 
-                        <Form.Group as={Col} lg="3" controlId="operadora">
+                        <Form.Group as={Col} lg="3" controlId="operadora" required>
                             <Form.Label>Operadora</Form.Label>
                             <Form.Control onChange={props.handleChange} value={aluno.operadora} as="select" defaultValue="Choose..."
                                           name="operadora">
@@ -84,7 +85,7 @@ function alunos(props) {
                         <Form.Group as={Col} controlId="curso">
                             <Form.Label>Curso</Form.Label>
                             <Form.Control onChange={props.handleChange} value={aluno.curso} as="select"
-                                           name="curso">
+                                           name="curso" required>
                                 <option selected="selected">Escolha um curso</option>
                                 {cursos.filter((curso) => {
                                         return curso.campus_id.toString() === aluno.campus.toString()

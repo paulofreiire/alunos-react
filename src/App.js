@@ -29,8 +29,6 @@ class App extends React.Component {
             campi: [],
             cursos: [],
             btnLabel: "Inserir",
-            offset: 0,
-            currentPage: 0,
         }
 
         this.handleChange = this.handleChange.bind(this);
